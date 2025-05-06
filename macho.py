@@ -4,7 +4,6 @@
 # Vitalii Gagarochkin
 
 
-from sys import argv
 import argparse
 
 def get_seqs(path):
@@ -131,4 +130,7 @@ with open(seq_path_out, "w") as output:
             for j in range(len(areas_1[i])):
                 output.write(f"{areas_1[i][j]}\t{areas_2[i][j]}\n")
 
-
+print(f'First alignment length: {len(list(seq_dict_first.values())[0])}')
+print(f'First alignment length: {len(list(seq_dict_second.values())[0])}')
+print(f'Percentage of matching columns for the first alignment: {len(matched_columns) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
+print(f'Percentage of matching columns for the second alignment: {len(matched_columns) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
