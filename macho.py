@@ -1,4 +1,4 @@
-# AUTHORS of Multiple Alignment Column Homology Organizer (MACHO)
+# AUTHORS of Multiple Alignment Column Hits Observer (MACHO)
 # Daniil Nagornyi
 # Vsevolod Maslenikov
 # Vitalii Gagarochkin
