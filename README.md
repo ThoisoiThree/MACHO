@@ -1,5 +1,10 @@
 # MACHO: Multiple Alignment Column Hits Observer
 
+AUTHORS of Multiple Alignment Column Hits Observer (MACHO)
+* Daniil Nagornyi
+* Vsevolod Maslenikov
+* Vitalii Gagarochkin
+
 A Python tool to compare two multiple sequence alignments (MSAs) and identify matching columns.
 
 ## Описание
