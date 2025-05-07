@@ -6,7 +6,7 @@
 
 import argparse
 
-def get_seqs(path):
+def get_seqs(path: any) -> dict:
 
     seqs = dict()
 
