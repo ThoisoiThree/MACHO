@@ -36,7 +36,7 @@ python macho.py [-h] [-hr] sequence_1 sequence_2 out
 
 Для работы MACHO требуется Python 3.
 
-1.  Клонируйте репозиторий:
+*  Клонируйте репозиторий:
     ```bash
     git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
     cd <ПАПКА_С_РЕПОЗИТОРИЕМ>
