@@ -2,8 +2,6 @@
 # Daniil Nagornyi
 # Vsevolod Maslenikov
 # Vitalii Gagarochkin
-
-
 import argparse
 
 def get_seqs(path: any) -> dict:
@@ -69,16 +67,12 @@ def process_output(matched_columns):
             
     return areas_1, areas_2
 
-
-
-
 parser = argparse.ArgumentParser(description = "Comparison of two multiple alignments of the same set of sequences")
 parser.add_argument('alignment_1', type = str, help = 'The path to the file with the first alignment in FASTA format')
 parser.add_argument('alignment_2', type = str, help = 'The path to the file with the second alignment in FASTA format')
 parser.add_argument('out', type = str, help = 'The path to the file for recording the results in TSV format')
 parser.add_argument('-hr', '--human-readable', action = 'store_true', help = 'Group matching columns into matching blocks in the output file')
 args = parser.parse_args()
-
 
 seq_path_first = args.alignment_1
 seq_path_second = args.alignment_2
@@ -101,14 +95,17 @@ matched_columns = list()
 #*@@@@@@@@@@@@@@@@@@@@@@
 
 #* находим совпадения
+j_last = 0
 for i in range(len(columns_first)):
     colum = columns_first[i]
     for j in range(len(columns_second)):
+        if j < j_last:
+            continue
         if colum == columns_second[j]:
             #* где i - позиция из 1 файла, а j - позиция из 2 файла
             match_position = tuple([i+1,j+1])
             matched_columns.append(match_position)
-
+            j_last = j
 
 #* выводим совпадения в новый файл
 areas_1, areas_2 = process_output(matched_columns)
