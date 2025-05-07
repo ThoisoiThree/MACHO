@@ -132,5 +132,5 @@ with open(seq_path_out, "w") as output:
 
 print(f'First alignment length: {len(list(seq_dict_first.values())[0])}')
 print(f'First alignment length: {len(list(seq_dict_second.values())[0])}')
-print(f'Percentage of matching columns for the first alignment: {len(matched_columns) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
-print(f'Percentage of matching columns for the second alignment: {len(matched_columns) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
+print(f'Percentage of matching columns for the first alignment: {(len(matched_columns) - 1) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
+print(f'Percentage of matching columns for the second alignment: {(len(matched_columns) - 1) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
