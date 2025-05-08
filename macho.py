@@ -1,12 +1,12 @@
+#!/usr/bin/env python3
 # AUTHORS of Multiple Alignment Column Hits Observer (MACHO)
 # Daniil Nagornyi
 # Vsevolod Maslenikov
 # Vitalii Gagarochkin
 
-
 import argparse
 
-def get_seqs(path: any) -> dict:
+def get_seqs(path):
 
     seqs = dict()
 
@@ -69,16 +69,13 @@ def process_output(matched_columns):
             
     return areas_1, areas_2
 
-
-
-
 parser = argparse.ArgumentParser(description = "Comparison of two multiple alignments of the same set of sequences")
 parser.add_argument('alignment_1', type = str, help = 'The path to the file with the first alignment in FASTA format')
 parser.add_argument('alignment_2', type = str, help = 'The path to the file with the second alignment in FASTA format')
 parser.add_argument('out', type = str, help = 'The path to the file for recording the results in TSV format')
 parser.add_argument('-hr', '--human-readable', action = 'store_true', help = 'Group matching columns into matching blocks in the output file')
+parser.add_argument('-g', '--gaps-controller', action = 'store_true', help = 'Add the ability to specify the maximum number of gaps in a column')
 args = parser.parse_args()
-
 
 seq_path_first = args.alignment_1
 seq_path_second = args.alignment_2
@@ -86,6 +83,12 @@ seq_path_out = args.out
 
 seq_dict_first = get_seqs(seq_path_first)
 seq_dict_second = get_seqs(seq_path_second)
+
+max_gaps = len(seq_dict_first)
+
+if args.gaps_controller:
+    print(f'Number of sequences in alignment: {len(seq_dict_first)}')
+    max_gaps = int(input('Maximum number of gaps in a column: '))
 
 seq_dict_first = sort_seqs_id(seq_dict_first)
 seq_dict_second = sort_seqs_id(seq_dict_second)
@@ -104,7 +107,7 @@ matched_columns = list()
 for i in range(len(columns_first)):
     colum = columns_first[i]
     for j in range(len(columns_second)):
-        if colum == columns_second[j]:
+        if colum == columns_second[j] and colum.count('-') <= max_gaps:
             #* где i - позиция из 1 файла, а j - позиция из 2 файла
             match_position = tuple([i+1,j+1])
             matched_columns.append(match_position)
@@ -129,6 +132,7 @@ with open(seq_path_out, "w") as output:
         for i in range(len(areas_1)):
             for j in range(len(areas_1[i])):
                 output.write(f"{areas_1[i][j]}\t{areas_2[i][j]}\n")
+
 
 print(f'First alignment length: {len(list(seq_dict_first.values())[0])}')
 print(f'First alignment length: {len(list(seq_dict_second.values())[0])}')
