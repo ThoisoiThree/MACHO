@@ -59,7 +59,7 @@ def process_output(matched_columns):
     for column_id in range(len(matched_columns)-1):
         area_1.append(matched_columns[column_id][0])
         area_2.append(matched_columns[column_id][1])
-        if matched_columns[column_id][0] + 1 == matched_columns[column_id+1][0]:
+        if matched_columns[column_id][0] + 1 == matched_columns[column_id+1][0] and abs(matched_columns[column_id][1] - matched_columns[column_id+1][1]) == 1:
             continue
         else:
             areas_1.append(area_1)
@@ -135,6 +135,6 @@ with open(seq_path_out, "w") as output:
 
 
 print(f'First alignment length: {len(list(seq_dict_first.values())[0])}')
-print(f'First alignment length: {len(list(seq_dict_second.values())[0])}')
+print(f'Second alignment length: {len(list(seq_dict_second.values())[0])}')
 print(f'Percentage of matching columns for the first alignment: {(len(matched_columns) - 1) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
 print(f'Percentage of matching columns for the second alignment: {(len(matched_columns) - 1) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
