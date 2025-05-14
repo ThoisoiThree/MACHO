@@ -20,7 +20,7 @@ python macho.py [-h] [-hr] [-g] sequence_1 sequence_2 out
 или
 
 ```bash
-./macho.py [-h] [-hr] [-g] sequence_1 sequence_2 out
+./macho.py [-h] [-hr] [-g] [-s] sequence_1 sequence_2 [out]
 ```
 
 
