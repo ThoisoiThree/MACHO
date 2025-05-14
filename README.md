@@ -1,4 +1,4 @@
-# MACHO: Multiple Alignment Column Hits Observer
+# MACHO: Multiple Alignments Column Hits Observer
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1K7gKSyI1rx_F28ohZgmQf4m9CvR5l64d?usp=sharing)<br>
 AUTHORS of Multiple Alignment Column Hits Observer (MACHO)
 * Daniil Nagornyi
