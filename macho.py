@@ -3,7 +3,9 @@
 # Daniil Nagornyi
 # Vsevolod Maslenikov
 # Vitalii Gagarochkin
+#v1.4
 
+import os
 import sys
 import argparse
 
@@ -39,7 +41,7 @@ def find_overlap(seq_1, seq_2):
         counter_2 = seq_1.find(seq_2)
     else:
         max_overlap = min(len(seq_1), len(seq_2)) - 1
-        for o in range(max_overlap, max_overlap//2, -1):
+        for o in range(max_overlap, max_overlap//5, -1):
             if seq_1.endswith(seq_2[:o]):
                 counter_1 = 0
                 counter_2 = len(seq_1) - o
@@ -147,13 +149,13 @@ def process_output(matched_columns):
 
 
 
-parser = argparse.ArgumentParser(description = 'MACHO: Multiple Alignments Column Hits Observer\nComparison of two multiple alignments of the same set of sequences', epilog = 'We hope that you will enjoy using our tool', formatter_class = argparse.RawTextHelpFormatter)
+parser = argparse.ArgumentParser(description = 'MACHO: Multiple Alignments Column Hits Observer\nComparison of two multiple alignments of the same set of sequences', epilog = 'For more information, see the web documentation (on Russian): https://kodomo.fbb.msu.ru/~vitalii.g/term2/MACHO.html\nWe hope that you will enjoy using our tool', formatter_class = argparse.RawTextHelpFormatter)
 parser.add_argument('alignment_1', type = argparse.FileType('r'), help = 'The path to the file with the first alignment in FASTA format')
 parser.add_argument('alignment_2', type = argparse.FileType('r'), help = 'The path to the file with the second alignment in FASTA format')
 parser.add_argument('out', nargs = '?', type = argparse.FileType('w'), default = sys.stdout, help = 'The path to the file for recording the results in TSV format')
 parser.add_argument('-hr', '--human-readable', action = 'store_true', help = 'Group matching columns into matching blocks in the output file')
 parser.add_argument('-g', '--gaps-controller', action = 'store_true', help = 'Add the ability to specify the maximum number of gaps in a column')
-parser.add_argument('-s', '--smart-mode', action = 'store_true', help = 'Consider the difference between indels')
+parser.add_argument('-s', '--smart-mode', action = 'store_true', help = 'Consider the differences between indels')
 args = parser.parse_args()
 
 
@@ -164,7 +166,7 @@ seq_path_out = args.out
 seq_dict_first = get_seqs(seq_path_first)
 seq_dict_second = get_seqs(seq_path_second)
 
-max_gaps = len(seq_dict_first)
+max_gaps = len(seq_dict_first) - 1
 
 if args.gaps_controller:
     print(f'Number of sequences in alignment: {len(seq_dict_first)}')
@@ -200,16 +202,16 @@ for i in range(len(columns_first)):
 areas_1, areas_2 = process_output(matched_columns)
 
 
-print(f'First alignment length: {len(list(seq_dict_first.values())[0])}')
-print(f'Second alignment length: {len(list(seq_dict_second.values())[0])}')
-print(f'Percentage of matching columns for the first alignment: {(len(matched_columns) - 1) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
-print(f'Percentage of matching columns for the second alignment: {(len(matched_columns) - 1) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
+print(f'First alignment length ({os.path.basename(seq_path_first.name)}): {len(list(seq_dict_first.values())[0])}')
+print(f'Second alignment length ({os.path.basename(seq_path_second.name)}): {len(list(seq_dict_second.values())[0])}')
+print(f'Percentage of matching columns for the first alignment ({os.path.basename(seq_path_first.name)}): {(len(matched_columns) - 1) / len(list(seq_dict_first.values())[0]) * 100:.02f} %')
+print(f'Percentage of matching columns for the second alignment ({os.path.basename(seq_path_second.name)}): {(len(matched_columns) - 1) / len(list(seq_dict_second.values())[0]) * 100:.02f} %')
 
 
 with seq_path_out as output:
 
     if args.human_readable:
-        output.write("Block\tAlignment_1\tAlignment_2\n")
+        output.write(f"Block\tAlignment_1 ({os.path.basename(seq_path_first.name)})\tAlignment_2 ({os.path.basename(seq_path_second.name)})\n")
         for i in range(len(areas_1)):
             block = i + 1
             seq1_start = areas_1[i][0]
@@ -218,7 +220,7 @@ with seq_path_out as output:
             seq2_end = areas_2[i][-1]
             output.write(f"{block}\t{seq1_start}-{seq1_end}\t{seq2_start}-{seq2_end}\n")
     else:
-        output.write("Alignment_1\tAlignment_2\n")
+        output.write(f"Alignment_1 ({os.path.basename(seq_path_first.name)})\tAlignment_2 ({os.path.basename(seq_path_second.name)})\n")
         for i in range(len(areas_1)):
             for j in range(len(areas_1[i])):
                 output.write(f"{areas_1[i][j]}\t{areas_2[i][j]}\n")
